@@ -1,0 +1,132 @@
+
+main.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+08000188 <main>:
+	.syntax unified
+	.type main , function
+	.type nmi_handler, function
+
+main:
+	movs	r0,	#10
+ 8000188:	200a      	movs	r0, #10
+	movs	r1,	#0
+ 800018a:	2100      	movs	r1, #0
+
+0800018c <SystemInit>:
+
+SystemInit:
+	ldr r3, = 0x12345678
+ 800018c:	4b02      	ldr	r3, [pc, #8]	; (8000198 <nmi_handler+0x2>)
+
+0800018e <loop>:
+loop:
+	adds	r1,	r0
+ 800018e:	1809      	adds	r1, r1, r0
+	subs	r0,	#1
+ 8000190:	3801      	subs	r0, #1
+	bne	loop
+ 8000192:	d1fc      	bne.n	800018e <loop>
+
+08000194 <deadloop>:
+
+deadloop:
+	b	deadloop
+ 8000194:	e7fe      	b.n	8000194 <deadloop>
+
+08000196 <nmi_handler>:
+
+nmi_handler:
+	bx	lr
+ 8000196:	4770      	bx	lr
+ 8000198:	12345678 	.word	0x12345678
+ 800019c:	080001f8 	.word	0x080001f8
+ 80001a0:	20000000 	.word	0x20000000
+ 80001a4:	20000000 	.word	0x20000000
+ 80001a8:	20000000 	.word	0x20000000
+ 80001ac:	20000000 	.word	0x20000000
+
+080001b0 <Reset_Handler>:
+  .weak  Reset_Handler
+  .type  Reset_Handler, %function
+Reset_Handler:  
+
+/* Copy the data segment initializers from flash to SRAM */  
+  movs  r1, #0
+ 80001b0:	2100      	movs	r1, #0
+  b  LoopCopyDataInit
+ 80001b2:	e003      	b.n	80001bc <LoopCopyDataInit>
+
+080001b4 <CopyDataInit>:
+
+CopyDataInit:
+  ldr  r3, =_sidata
+ 80001b4:	4b0a      	ldr	r3, [pc, #40]	; (80001e0 <LoopFillZerobss+0x10>)
+  ldr  r3, [r3, r1]
+ 80001b6:	585b      	ldr	r3, [r3, r1]
+  str  r3, [r0, r1]
+ 80001b8:	5043      	str	r3, [r0, r1]
+  adds  r1, r1, #4
+ 80001ba:	3104      	adds	r1, #4
+
+080001bc <LoopCopyDataInit>:
+    
+LoopCopyDataInit:
+  ldr  r0, =_sdata
+ 80001bc:	4809      	ldr	r0, [pc, #36]	; (80001e4 <LoopFillZerobss+0x14>)
+  ldr  r3, =_edata
+ 80001be:	4b0a      	ldr	r3, [pc, #40]	; (80001e8 <LoopFillZerobss+0x18>)
+  adds  r2, r0, r1
+ 80001c0:	1842      	adds	r2, r0, r1
+  cmp  r2, r3
+ 80001c2:	429a      	cmp	r2, r3
+  bcc  CopyDataInit
+ 80001c4:	d3f6      	bcc.n	80001b4 <CopyDataInit>
+  ldr  r2, =_sbss
+ 80001c6:	4a09      	ldr	r2, [pc, #36]	; (80001ec <LoopFillZerobss+0x1c>)
+  b  LoopFillZerobss
+ 80001c8:	e002      	b.n	80001d0 <LoopFillZerobss>
+
+080001ca <FillZerobss>:
+/* Zero fill the bss segment. */  
+FillZerobss:
+  movs  r3, #0
+ 80001ca:	2300      	movs	r3, #0
+  str  r3, [r2], #4
+ 80001cc:	f842 3b04 	str.w	r3, [r2], #4
+
+080001d0 <LoopFillZerobss>:
+    
+LoopFillZerobss:
+  ldr  r3, = _ebss
+ 80001d0:	4b07      	ldr	r3, [pc, #28]	; (80001f0 <LoopFillZerobss+0x20>)
+  cmp  r2, r3
+ 80001d2:	429a      	cmp	r2, r3
+  bcc  FillZerobss
+ 80001d4:	d3f9      	bcc.n	80001ca <FillZerobss>
+
+/* Call the clock system intitialization function.*/
+	bl  SystemInit  
+ 80001d6:	f7ff efda 	blx	800018c <SystemInit>
+/* Call the application's entry point.*/
+    bl  main
+ 80001da:	f7ff ffd5 	bl	8000188 <main>
+  bx  lr    
+ 80001de:	4770      	bx	lr
+ 80001e0:	080001f8 	.word	0x080001f8
+ 80001e4:	20000000 	.word	0x20000000
+ 80001e8:	20000000 	.word	0x20000000
+ 80001ec:	20000000 	.word	0x20000000
+ 80001f0:	20000000 	.word	0x20000000
+
+080001f4 <ADC1_2_IRQHandler>:
+ * @retval None       
+*/
+    .section  .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b  Infinite_Loop
+ 80001f4:	e7fe      	b.n	80001f4 <ADC1_2_IRQHandler>
+	...
