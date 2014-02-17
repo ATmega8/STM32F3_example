@@ -18,6 +18,35 @@
 /* @(/2/0) .................................................................*/
 #include "main.h"
 
+#define BSP_TICKS_PER_SEC 10
+
+void Q_onAssert(char const Q_ROM * const Q_ROM_VAR, int line)
+{
+
+}
+
+void QF_onStartup(void)
+{
+    BSP_clockInit();
+}
+
+void QK_onIdle(void){}
+void QF_onCleanup(void) {}
+
+void QF_onClockTick(void)
+{
+    QF_TICK((void *) 0);
+}
+
+enum MyAOSignals
+{
+    TIMEOUT_SIG = Q_USER_SIG,
+    UP_SIG,
+    DOWN_SIG,
+    ARM_SIG,
+    MAX_SIG
+};
+
 
 /* @(/1/0) .................................................................*/
 typedef struct MyAOTag {
@@ -142,3 +171,26 @@ static QState MyAO_Timing(MyAO * const me, QEvt const * const e) {
     return status_;
 }
 
+static MyAO l_MyAO;
+QActive *AOs_MyAO = &l_MyAO;
+
+static void MyAO_ctor(void)
+{
+    MyAO *me = (MyAO *)AOs_MyAO;
+    QActive_ctor(&me->super, (QStateHandler)&MyAO_initial);
+    QTimeEvt_ctor(&me->TimeEvt, TIMEOUT_SIG);
+}
+
+int main(void)
+{
+    MyAO_ctor();
+    BSP_init();
+    QF_init();
+
+    static QEvt const *myao_queueSto[10];
+    QActive_start(AOs_MyAO,
+            1, myao_queueSto, Q_DIM(myao_queueSto),
+            (void *)0, 1024, (QEvt *)0);
+
+    return QF_run();
+}

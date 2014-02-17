@@ -5,10 +5,10 @@ BSP_init(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); 
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 
-  	GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_7);
+  	GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_7);    
     GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_7);
 
 	GPIO_InitStructure.GPIO_Pin  	= GPIO_Pin_2 | GPIO_Pin_3;
@@ -33,7 +33,7 @@ static char *itoa(int value, char *string, int radix)
 {
 	int 	i, d;
 	int 	flag = 0;
-	char	*ptr = string;
+	char	*ptr = string;  
 
 	if(radix != 0)
 	{
@@ -105,7 +105,7 @@ USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...)
 			{
 				case 's':
 					s = va_arg(ap, const char *);
-
+				
 					for(; *s; s++)
 					{
 						USART_SendData(USARTx, *s);
@@ -136,44 +136,15 @@ USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...)
 	}
 }
 
-void BSP_display_timeout(void)
+void BSP_ledOff(void)
 {
-	USAPT_printf(USART2, "%d", me->timeout);
+	USART_printf(USART2, "\r\nled_off\n\r");
 }
 
-void BSP_Boom(void)
+void BSP_ledOn(void)
 {
-    USART_printf(USART2, "Boom");
-}
-
-void BSP_onKeybroad(void)
-{
-    char key;
-
-    key = (char)USART_ReceiveData(USART2);
-
-    switch(key)
-    {
-        case 'u':
-        case 'U':
-            QACTIVE_POST((QActive *)&l_MyAO,
-                    Q_NEW(QEvt, UP_SIG), (void *) 0);
-            break;
-
-        case 'd':
-        case 'D':
-            QACTIVE_POST((QActive *)&l_MyAO,
-                    Q_NEW(QEvt, DOWN_SIG), (void *) 0);
-            break;
-
-        case 'a':
-        case 'A':
-            QACTIVE_POST((QActive *)&l_MyAO,
-                    Q_NEW(QEvt, ARM_SIG), (void *) 0);
-            break;
-    }
-
-}
+	USART_printf(USART2, "\r\nled_on\n\r");
+}	
 
 void BSP_clockInit(void)
 {

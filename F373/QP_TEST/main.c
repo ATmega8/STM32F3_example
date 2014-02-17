@@ -19,9 +19,11 @@
 
 #define BSP_TICKS_PER_SEC 100
 
-void Q_onAssert(char const Q_ROM * const Q_ROM_VAR file, int line) {
+void Q_onAssert(char const Q_ROM * const Q_ROM_VAR file, int line){
+
 }
-void QF_onStartup(void) 
+
+void QF_onStartup(void)
 {
 	BSP_clockInit();
 }
