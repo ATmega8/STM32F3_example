@@ -5,10 +5,10 @@ BSP_init(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); 
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
 
-  	GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_7);    
+  	GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_7);
     GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_7);
 
 	GPIO_InitStructure.GPIO_Pin  	= GPIO_Pin_2 | GPIO_Pin_3;
@@ -33,7 +33,7 @@ static char *itoa(int value, char *string, int radix)
 {
 	int 	i, d;
 	int 	flag = 0;
-	char	*ptr = string;  
+	char	*ptr = string;
 
 	if(radix != 0)
 	{
@@ -105,7 +105,7 @@ USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...)
 			{
 				case 's':
 					s = va_arg(ap, const char *);
-				
+
 					for(; *s; s++)
 					{
 						USART_SendData(USARTx, *s);
@@ -136,16 +136,21 @@ USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...)
 	}
 }
 
-void BSP_ledOff(void)
+void BSP_display_timeout(void)
 {
-	USART_printf(USART2, "\r\nled_off\n\r");
+    USART_printf(USART2, "%d", l_MyAO.timeout);
 }
 
-void BSP_ledOn(void)
+void BSP_Boom(void)
 {
-	USART_printf(USART2, "\r\nled_on\n\r");
-}	
+    USART_printf(USART2, "Boom");
+}
 
+void BSP_onKeyboard(void)
+{
+    uint8_t key;
+    key = (uint8_t)USART_Re
+}
 void BSP_clockInit(void)
 {
 	NVIC_InitTypeDef NVIC_InitStructure;

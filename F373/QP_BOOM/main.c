@@ -36,6 +36,7 @@ void QF_onCleanup(void) {}
 void QF_onClockTick(void)
 {
     QF_TICK((void *) 0);
+    BSP_onKeyborad();
 }
 
 enum MyAOSignals

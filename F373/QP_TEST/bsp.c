@@ -146,7 +146,7 @@ void BSP_Boom(void)
     USART_printf(USART2, "Boom");
 }
 
-void BSP_onKeybroad(void)
+void BSP_onKeyborad(void)
 {
     char key;
 
