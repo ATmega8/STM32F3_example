@@ -1,11 +1,11 @@
 /**
   ******************************************************************************
-  * @file    Project/STM32F37x_StdPeriph_Templates/stm32f37x_it.c 
+  * @file    Project/STM32F37x_StdPeriph_Templates/stm32f37x_it.c
   * @author  MCD Application Team
   * @version V1.0.0
   * @date    20-September-2012
   * @brief   Main Interrupt Service Routines.
-  *          This file provides template for all exceptions handler and 
+  *          This file provides template for all exceptions handler and
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
@@ -18,8 +18,8 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
@@ -142,6 +142,7 @@ void DebugMon_Handler(void)
 void SysTick_Handler(void)
 {
 	QF_TICK_X(0U, (void *)0);
+    BSP_onKeyboard();
 }
 
 /******************************************************************************/
@@ -159,7 +160,7 @@ void SysTick_Handler(void)
 
 /**
   * @}
-  */ 
+  */
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

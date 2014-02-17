@@ -136,43 +136,14 @@ USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...)
 	}
 }
 
-void BSP_display_timeout(void)
+void BSP_ledOff(void)
 {
-	USAPT_printf(USART2, "%d", me->timeout);
+    USART_printf(USART2, "\r\nled_off\n\r");
 }
 
-void BSP_Boom(void)
+void BSP_ledOn(void)
 {
-    USART_printf(USART2, "Boom");
-}
-
-void BSP_onKeyborad(void)
-{
-    char key;
-
-    key = (char)USART_ReceiveData(USART2);
-
-    switch(key)
-    {
-        case 'u':
-        case 'U':
-            QACTIVE_POST((QActive *)&l_MyAO,
-                    Q_NEW(QEvt, UP_SIG), (void *) 0);
-            break;
-
-        case 'd':
-        case 'D':
-            QACTIVE_POST((QActive *)&l_MyAO,
-                    Q_NEW(QEvt, DOWN_SIG), (void *) 0);
-            break;
-
-        case 'a':
-        case 'A':
-            QACTIVE_POST((QActive *)&l_MyAO,
-                    Q_NEW(QEvt, ARM_SIG), (void *) 0);
-            break;
-    }
-
+    USART_printf(USART2, "\r\nled_on\n\r");
 }
 
 void BSP_clockInit(void)

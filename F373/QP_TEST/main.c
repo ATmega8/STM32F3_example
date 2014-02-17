@@ -29,9 +29,9 @@ void QF_onStartup(void)
 }
 void QK_onIdle(void){}
 void QF_onCleanup(void) {}
-void QF_onClockTick(void) {
+/*void QF_onClockTick(void) {
     QF_TICK((void *)0);
-}
+}*/
 
 enum BlinkySignals {
     TIMEOUT_SIG = Q_USER_SIG,

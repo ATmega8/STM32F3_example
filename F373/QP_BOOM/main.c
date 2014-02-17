@@ -19,9 +19,10 @@
 #include "main.h"
 
 #define BSP_TICKS_PER_SEC 10
+#define INIT_DEFUSE 127
+#define INIT_TIMEOUT 30
 
-void Q_onAssert(char const Q_ROM * const Q_ROM_VAR, int line)
-{
+void Q_onAssert(char const Q_ROM * const Q_ROM_VAR file, int line){
 
 }
 
@@ -36,7 +37,7 @@ void QF_onCleanup(void) {}
 void QF_onClockTick(void)
 {
     QF_TICK((void *) 0);
-    BSP_onKeyborad();
+    /*BSP_onKeyboard();*/
 }
 
 enum MyAOSignals
@@ -76,6 +77,7 @@ static QState MyAO_Timing(MyAO * const me, QEvt const * const e);
 static QState MyAO_initial(MyAO * const me, QEvt const * const e) {
     me->timeout = INIT_TIMEOUT;
     me->defuse = INIT_DEFUSE;
+    QTimeEvt_postEvery(&me->TimeEvt, (QActive *)me, BSP_TICKS_PER_SEC/2);
     return Q_TRAN(&MyAO_SET);
 }
 /* @(/1/0/4/1) .............................................................*/
@@ -180,6 +182,48 @@ static void MyAO_ctor(void)
     MyAO *me = (MyAO *)AOs_MyAO;
     QActive_ctor(&me->super, (QStateHandler)&MyAO_initial);
     QTimeEvt_ctor(&me->TimeEvt, TIMEOUT_SIG);
+}
+
+void BSP_display_timeout(void)
+{
+    USART_printf(USART2, "%d", l_MyAO.timeout);
+}
+
+void BSP_Boom(void)
+{
+    USART_printf(USART2, "Boom");
+}
+
+void BSP_onKeyboard(void)
+{
+    uint8_t key;
+
+    /*USART_printf(USART2, "Hellow");*/
+
+    while(USART_GetFlagStatus(USART2, USART_FLAG_RXNE) != RESET);
+    key = (uint8_t) USART_ReceiveData(USART2);
+
+    switch(key)
+    {
+        case 'u':
+        case 'U':
+            QACTIVE_POST((QActive *)&l_MyAO,
+                    Q_NEW(QEvt, UP_SIG), (void *)0);
+            break;
+
+        case 'd':
+        case 'D':
+            QACTIVE_POST((QActive *)&l_MyAO,
+                    Q_NEW(QEvt, DOWN_SIG), (void *)0);
+            break;
+
+        case 'a':
+        case 'A':
+            QACTIVE_POST((QActive *)&l_MyAO,
+                    Q_NEW(QEvt, ARM_SIG), (void *)0);
+            break;
+    }
+
 }
 
 int main(void)
