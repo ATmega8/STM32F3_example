@@ -149,7 +149,29 @@ void BSP_Boom(void)
 void BSP_onKeyboard(void)
 {
     uint8_t key;
-    key = (uint8_t)USART_Re
+    key = (uint8_t) USART_ReceiveData(USART2);
+
+    switch(key)
+    {
+        case 'u':
+        case 'U':
+            QACTIVE_POST((QActive *)&l_MyAO,
+                    Q_NEW(QEvt, UP_SIG, (void *)0);
+            break;
+
+        case 'd':
+        case 'D':
+            QACTIVE_POST((QActive *)&l_MyAO,
+                    Q_NEW(QEvt, DOWN_SIG, (void *)0);
+            break;
+
+        case 'a':
+        case 'A':
+            QACTIVE_POST((QActive *)&l_MyAO,
+                    Q_NEW(QEvt, ARM_SIG, (void *)0);
+            break;
+    }
+
 }
 void BSP_clockInit(void)
 {

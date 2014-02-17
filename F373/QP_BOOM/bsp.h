@@ -1,4 +1,7 @@
-void BSP_ledOff(void);
-void BSP_ledOn(void);
+extern l_MyAo;
+
+void BSP_Boon(void);
+void BSP_display_timeout(void);
+void BSP_onKeyboard(void);
 void BSP_init(void);
 void BSP_clockInit(void);
