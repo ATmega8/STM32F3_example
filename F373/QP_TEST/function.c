@@ -18,7 +18,7 @@ void __attribute__((__no_instrument_function__))
 {
 
 
-    char s[15] = "\r\nE:0x00000000\n\r";
+    char s[16] = "\r\nE:0x00000000\n\r";
 
     uint32_t temp, i;
 
@@ -27,9 +27,9 @@ void __attribute__((__no_instrument_function__))
         temp = (((uint32_t)this_func >> i*4) & 0xf);
 
         if(temp < 10)
-            s[17-i] = temp + 0x30;
+            s[13-i] = temp + 0x30;
         else
-            s[17-i] = temp + 0x37;
+            s[13-i] = temp + 0x37;
 
     }
 
@@ -43,7 +43,7 @@ void __attribute__((__no_instrument_function__))
 void __attribute__((__no_instrument_function__))
      __cyg_profile_func_exit(void *this_func, void *call_site)
 {
-    char s[15] ="\r\nX:0x00000000\n\r";
+    char s[16] ="\r\nX:0x00000000\n\r";
 
 
     uint32_t temp, i;
@@ -53,9 +53,9 @@ void __attribute__((__no_instrument_function__))
         temp = (((uint32_t)this_func >> i*4) & 0xf);
 
         if(temp < 10)
-            s[17-i] = temp + 0x30;
+            s[13-i] = temp + 0x30;
         else
-            s[17-i] = temp + 0x37;
+            s[13-i] = temp + 0x37;
 
     }
 
