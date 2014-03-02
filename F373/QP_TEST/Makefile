@@ -17,7 +17,7 @@ OBJDUMP = arm-none-eabi-objdump
 TARGET = main
 
 #需要编译的C文件
-SRC = stm32f37x_it.c ../src/system_stm32f37x.c main.c bsp.c 
+SRC = stm32f37x_it.c ../src/system_stm32f37x.c main.c bsp.c function.c newlib.c
 
 #需要编译的汇编文件
 ASRC = 
@@ -31,10 +31,11 @@ INCDIR =  -I ../inc
 INCDIR += -I ../CMSIS/Include 
 INCDIR += -I../CMSIS/Device/ST/STM32F37x/Include
 
-CFLAGS = -g -c -O2 -T STM32_FLASH.ld $(INCDIR) 
+CFLAGS = -g -c -O0 -T STM32_FLASH.ld $(INCDIR) 
 CFLAGS += -mcpu=cortex-m4 -mlittle-endian -mthumb -mthumb-interwork 
-CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16 --specs=nano.specs
 CFLAGS += -nostdlib -ffreestanding -fno-builtin
+CFLAGS += -finstrument-functions
 #-Dprintf=iprintf
 
 ASFLAGS = -g -c -mcpu=cortex-m4 -mlittle-endian -mthumb -mthumb-interwork -mfloat-abi=hard -mfpu=fpv4-sp-d16

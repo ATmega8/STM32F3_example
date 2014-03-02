@@ -117,8 +117,9 @@ static void USART_ctor(void) {
     QTimeEvt_ctor(&me->TimeEvt, TIMEOUT_SIG);
 }
 int main() {
-    USART_ctor();
+
 	BSP_init();
+    USART_ctor();
     QF_init();
 
     static QEvt const *usart_queueSto[10];

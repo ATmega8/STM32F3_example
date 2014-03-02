@@ -138,12 +138,12 @@ USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...)
 
 void BSP_ledOff(void)
 {
-    USART_printf(USART2, "\r\nled_off\n\r");
+//    printf("\r\nled_off\n\r");
 }
 
 void BSP_ledOn(void)
 {
-    USART_printf(USART2, "\r\nled_on\n\r");
+//    printf("\r\nled_on\n\r");
 }
 
 void BSP_clockInit(void)
