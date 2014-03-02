@@ -984,8 +984,8 @@ BSP_init(void)
  80007ce:	4619      	mov	r1, r3
  80007d0:	f001 f9b6 	bl	8001b40 <GPIO_Init>
 
-	USART_InitStructure.USART_BaudRate   = 115200;
- 80007d4:	f44f 33e1 	mov.w	r3, #115200	; 0x1c200
+	USART_InitStructure.USART_BaudRate   = 460800;
+ 80007d4:	f44f 23e1 	mov.w	r3, #460800	; 0x70800
  80007d8:	603b      	str	r3, [r7, #0]
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
  80007da:	f04f 0300 	mov.w	r3, #0
